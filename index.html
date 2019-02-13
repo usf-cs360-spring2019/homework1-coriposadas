@@ -23,12 +23,18 @@
     }
     .line {
      fill: none;
-     stroke: steelblue;
-     stroke-width: 2px;
+     stroke: none;
     }
-
     .area {
      fill: lightsteelblue;
+    }
+    .tick line {
+      stroke-width: 0;
+    }
+    .caption {
+      width: 960px;
+      font-size: 12px;
+      margin-left: 20px;
     }
   </style>
 
@@ -98,11 +104,12 @@
 <section class="section">
   <div class="container content">
     <h2>D3 Encodings</h2>
-    <h3> Top 10 Incidences</h3>
+    <br>
+    <h4>Top 10 Incidences</h4>
       <div id="plot1">
         <script>
           // set the dimensions and margins of the graph
-          var margin = {top: 20, right: 20, bottom: 30, left: 150},
+          var margin = {top: 50, right: 20, bottom: 30, left: 75},
               width = 960 - margin.left - margin.right,
               height = 500 - margin.top - margin.bottom;
 
@@ -146,6 +153,22 @@
                 .attr("y", function(d) { return y(d.Count); })
                 .attr("height", function(d) { return height - y(d.Count); });
 
+            // add x axis label
+            svg.append("text")
+              .attr("x", width / 2 )
+              .attr("y",  height + margin.top - 490)
+              .style("text-anchor", "middle")
+              .text("Incident Category");
+
+            // add y axis label
+            svg.append("text")
+              .attr("transform", "rotate(-90)")
+              .attr("y", 0 - margin.left)
+              .attr("x",0 - (height / 2))
+              .attr("dy", "2em")
+              .style("text-anchor", "middle")
+              .text("Count of Number of Records");
+
             // add the x Axis
             svg.append("g")
                 .attr("transform", "translate(0," + height + ")")
@@ -153,24 +176,29 @@
 
             // add the y Axis
             svg.append("g")
-                .call(d3.axisLeft(y));
+                .call(d3.axisLeft(y).tickFormat(d3.format(".2s")));
 
           });
         </script>
+      </div>
+      <div class="caption">
+        <p>
+          The chart shows the count of number of records for each incident category. The view was filtered to show the top 10 incident categories with the most incidences recorded. Here we can see that larceny theft is the most reported incident by a significant amount. Created by Cori Posadas.
+        </p>
       </div>
     </div>
   </section>
 
   <section class="section">
     <div class="container content">
-      <h3>Most Dangerous Neighborhoods</h3>
+      <h4>Most Dangerous Neighborhoods</h4>
       <div id="plot2">
         <script>
           d3.csv("Neighborhoods.csv").then(function(data) {
             console.log(data);
 
           // set the dimensions and margins of the graph
-          var margin = {top: 20, right: 20, bottom: 30, left: 150},
+          var margin = {top: 20, right: 20, bottom: 50, left: 145},
             width = 960 - margin.left - margin.right,
             height = 500 - margin.top - margin.bottom;
 
@@ -210,10 +238,25 @@
               .attr("y", function(d) { return y(d.Neighborhood); })
               .attr("height", y.bandwidth());
 
+          // add x axis label
+          svg.append("text")
+            .attr("x", width / 2 )
+            .attr("y",  height + margin.top + 20)
+            .style("text-anchor", "middle")
+            .text("Count of Number of Records");
+
+            // add y axis label
+            svg.append("text")
+              .attr("x", 0 + margin.left - 200)
+              .attr("y",0 + (height/height - 10))
+              //.attr("dy", "2em")
+              .style("text-anchor", "middle")
+              .text("Analysis Neighborhood");
+
           // add the x Axis
           svg.append("g")
               .attr("transform", "translate(0," + height + ")")
-              .call(d3.axisBottom(x));
+              .call(d3.axisBottom(x).tickFormat(d3.format(".2s")));
 
           // add the y Axis
           svg.append("g")
@@ -222,7 +265,11 @@
           });
         </script>
       </div>
-
+      <div class="caption">
+        <p>
+          The chart shows the count of the number of records for each neighborhood. The view was filtered to show the top 10 neighborhoods with the most incidences recorded. Created by Cori Posadas.
+        </p>
+      </div>
   </div>
 </section>
 
@@ -235,7 +282,7 @@
             console.log(data);
 
         // set the dimensions and margins of the graph
-        var margin = {top: 20, right: 20, bottom: 30, left: 50},
+        var margin = {top: 20, right: 20, bottom: 50, left: 50},
             width = 960 - margin.left - margin.right,
             height = 500 - margin.top - margin.bottom;
 
@@ -286,6 +333,22 @@
               .attr("class", "line")
               .attr("d", valueline);
 
+          // add x axis label
+          svg.append("text")
+            .attr("x", width / 2 )
+            .attr("y",  height + margin.top + 15)
+            .style("text-anchor", "middle")
+            .text("Hour of Incident Time");
+
+          // add y axis label
+          svg.append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 0 - margin.left)
+            .attr("x",0 - (height / 2))
+            .attr("dy", "1em")
+            .style("text-anchor", "middle")
+            .text("Count of Number of Records");
+
           // add the X Axis
           svg.append("g")
               .attr("transform", "translate(0," + height + ")")
@@ -293,12 +356,16 @@
 
           // add the Y Axis
           svg.append("g")
-              .call(d3.axisLeft(y));
+              .call(d3.axisLeft(y).tickFormat(d3.format(".1s")));
 
         });
       </script>
     </div>
-
+    <div class="caption">
+      <p>
+        The plot of the count of number of records for each hour from midnight (hour 0) to 11 PM (hour 23). Here we can see that there is a lull in incidences reported from about 3 AM to 6 AM. Created by Cori Posadas.
+      </p>
+    </div>
 </div>
 </section>
 
@@ -310,35 +377,28 @@
       </svg> -->
 
       <h3>Prototypes</h3>
+      <br>
 
       <p>
-        <img src="./images/Top10.png" alt="Top10">
+        <img src="./images/Top10.png" alt="Top10" width="960" height="500">
       </p>
 
       <p>
-        <img src="./images/Neighborhoods.png" alt="Neighborhoods">
+        <img src="./images/Neighborhoods.png" alt="Neighborhoods" width="960" height="500">
       </p>
 
       <p>
-        <img src="./images/Times.png" alt="Times">
-      </p>
-
-      <h3>Interpretation</h3>
-
-      <p>
-        Insert interpretations
-      </p>
-
-      <h3>Discussion</h3>
-
-      <p>
-        If appropriate, provide a brief discussion of the primary goal and findings of the visualization, any challenges encountered creating the visualization, and any other context as required by the assignment.
+        <img src="./images/Times.png" alt="Times" width="960" height="500">
       </p>
 
       <h3>Credit</h3>
 
       <p>
-        If appropriate, provide credit for the dataset, any code used, and design inspirations here. Unsufficient discussion here is a violation of the <a href="/syllabus.html#cheating-policy">academic honesty policy</a> and may result in an F grade for the assignment or the <em>entire</em> course.
+        <span>The "Top 10 Incidences" bar chart is inspired by d3noob's <a href="https://bl.ocks.org/d3noob/bdf28027e0ce70bd132edc64f1dd7ea4">Simple bar graph in v4</a></span>
+        <br>
+        <span>The "Most Dangerous Neighborhoods" bar chart is inspired by Aravind Cheekkallur's <a href="https://bl.ocks.org/caravinden/eb0e5a2b38c8815919290fa838c6b63b">Horizontal Bar chart d3.v4</a></span>
+        <br>
+        <span>The "Dangerous Times" area chart is inspired by d3noob's <a href="https://bl.ocks.org/d3noob/119a138ef9bd1d8f0a8d57ea72355252">Simple graph with filled area in v4</a></span>
       </p>
     </div>
   </section>
@@ -375,7 +435,6 @@
             </td>
 
             <td>
-              If appropriate, provide a brief justification for this level of functionality. Clearly state if this level was not implemented.
             </td>
           </tr>
 
@@ -390,14 +449,13 @@
             </td>
 
             <td>
-              If appropriate, provide a brief justification for this level of functionality. Clearly state if this level was not implemented.
             </td>
           </tr>
 
           <!-- b level functionality -->
           <tr>
             <td class="has-text-centered">
-              <i class="far fa-fw fa-times-circle has-text-danger"></i>
+              <i class="far fa-fw fa-times-circle has-text-success"></i>
             </td>
 
             <td class="has-text-centered">
@@ -405,7 +463,6 @@
             </td>
 
             <td>
-              If appropriate, provide a brief justification for this level of functionality. Clearly state if this level was not implemented.
             </td>
           </tr>
 
@@ -413,7 +470,7 @@
           <!-- a level functionality -->
           <tr>
             <td class="has-text-centered">
-              <i class="far fa-fw fa-times-circle has-text-danger"></i>
+              <i class="far fa-fw fa-times-circle has-text-success"></i>
             </td>
 
             <td class="has-text-centered">
@@ -421,15 +478,12 @@
             </td>
 
             <td>
-              If appropriate, provide a brief justification for this level of functionality. Clearly state if this level was not implemented.
+              Created three different visualizations with two different encodings. All in color with titles, labels, and captions. Implemented all three in D3 to the best of my abilities.
             </td>
           </tr>
         <tbody>
       </table>
 
-      <p>
-        Any additional context you want to provide regarding functionality and grading can be included here. This may include any challenges or bugs you ran into that prevented you from implementing additional functionality.
-      </p>
     </div>
   </section>
 
@@ -445,24 +499,26 @@
         <div class="media-left">
           <p class="image is-128x128">
             <!-- todo: replace with your profile image -->
-            <img src="https://bulma.io/images/placeholders/128x128.png">
+            <img src="profile.jpg" alt="Profile Image">
           </p>
         </div>
 
         <div class="media-content">
             <p>
               <!-- todo: replace with your information -->
-              <strong>Full Name</strong>
+              <strong>Cori Posadas</strong>
               <br/>
-              This is a good place to place a brief biography describing your interests and skills, a professional profile photo, and/or links to your Github, Linkedin, and other <em>professional</em> social media accounts.
+              Senior computer science major at University of San Franciscio.
+              <br>
+              Interests include front-end web developement and spending time outdoors!
               <br/>
               <!-- find brand icons at: https://fontawesome.com/icons?d=gallery&s=brands&m=free -->
-              <a href="https://github.com/">
+              <a href="https://github.com/coriposadas">
                 <span class="fab fa-github"></span>
                 <span>Github</span>
               </a>
               &bullet;
-              <a href="https://www.linkedin.com/">
+              <a href="https://www.linkedin.com/in/corianna-posadas-a4a48915b/">
                 <span class="fab fa-linkedin"></span>
                 <span>LinkedIn</span>
               </a>
